@@ -26,10 +26,18 @@ class AuthController extends Controller
             'remember' => 'boolean'
         ]);
         $credentials = $request->only('email', 'password');
-        if(Auth::attempt($credentials, $request->remember)){
+        if(Auth::guard('web')->attempt($credentials, $request->remember)){
             return redirect()->route('dashboard.index');
         }
         return redirect()->route('login.form')->withInput()
             ->with('error', 'Invalid credentials');
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login.form');
+    }
+
+
 }

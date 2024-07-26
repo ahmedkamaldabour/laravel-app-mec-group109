@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Middleware\CanDeleteModel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,39 +22,27 @@ Route::get('/', function () {
 })->name('dashboard.index');
 
 
-Route::get('login',[AuthController::class , 'loginForm'])->name('login.form');
-Route::post('login',[AuthController::class , 'login'])->name('login.submit');
+Route::get('login', [AuthController::class, 'loginForm'])->name('login.form')->middleware('guest');
+Route::post('login', [AuthController::class, 'login'])->name('login.submit')->middleware('guest');
+
+
+Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::group([
+    'middleware' => 'auth:web',
+    'prefix' => 'categories',
+    'as' => 'categories.',
+    'controller' => CategoryController::class
+], static function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::get('/{category_id}', 'show')->name('show');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{category_id}/edit', 'edit')->name('edit');
+    Route::put('/{category_id}', 'update')->name('update');
+    Route::delete('/{category_id}', 'destroy')->name('destroy')->middleware('can_delete_model');
+});
+
+Route::resource('products', ProductController::class)->middleware('auth:web');
 
 
 
-// CURD ( Category -> Name and description  ) ( index , show , create , store , edit , update , destroy ) 7 routes
-
-
-// migration file ( php artisan make:migration create_categories_table )
-// run migration ( php artisan migrate )
-// model file ( php artisan make:model Category )
-// controller file ( php artisan make:controller CategoryController)
-
-
-
-// define routes
-// Create views ( index ( all data ) , show ( one row ) , create , edit )
-
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
-Route::get('/categories/{category_id}', [CategoryController::class, 'show'])->name('categories.show');
-Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-Route::get('/categories/{category_id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-Route::put('/categories/{category_id}', [CategoryController::class, 'update'])->name('categories.update');
-Route::delete('/categories/{category_id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-
-
-// get post ( put , patch , delete )
-
-
-// erd
-// migration file
-// prepare the model
-// main super admin user and fake data ( factory and seeder )
-// run .....
-// make controller

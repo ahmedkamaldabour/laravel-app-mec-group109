@@ -1,7 +1,6 @@
 @extends('dashboard.inc.master')
 
 
-
 @section('content')
 
     <!-- Content Wrapper. Contains page content -->
@@ -29,8 +28,8 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Categories</h3>
-                        <a href="{{route('categories.create')}}" class="btn btn-primary float-right">Add Category</a>
+                        <h3 class="card-title">Products</h3>
+                        <a href="{{route('categories.create')}}" class="btn btn-primary float-right">Add Product</a>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -38,20 +37,29 @@
                             <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Category Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($categories as $category)
+                            @foreach($products as $Product)
                                 <tr>
-                                    <td>{{$category->id}}</td>
-                                    <td>{{$category->name}}</td>
-                                    <td>{{$category->description}}</td>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td><img src="{{asset('uploads/products/' . $Product->image)}}" alt="" style="width: 50px; height: 50px;"></td>
+                                    <td>{{$Product->name}}</td>
+                                    <td>{{substr($Product->description, 0, 50)}}...</td>
+                                    <td>{{$Product->category->name}}</td>
+                                    <td>{{$Product->price}}</td>
+                                    <td>{{$Product->stock}}</td>
                                     <td>
-                                        <a href="{{route('categories.edit', $category->id)}}" class="btn btn-primary">Edit</a>
+                                        <a href="{{route('products.edit', $Product->id)}}" class="btn btn-primary">Edit</a>
                                         @if(auth()->user()->is_super_admin)
-                                            <form action="{{route('categories.destroy', $category->id)}}" method="post" style="display: inline">
+                                            <form action="{{route('products.destroy', $Product->id)}}" method="post" style="display: inline">
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
@@ -61,6 +69,7 @@
                                 </tr>
                             @endforeach
                             </tbody>
+                            {{$products->links()}}
                         </table>
                     </div>
                 </div>

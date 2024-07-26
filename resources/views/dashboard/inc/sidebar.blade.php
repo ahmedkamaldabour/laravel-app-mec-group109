@@ -5,6 +5,9 @@
         <img src="{{asset('DashboardAssets')}}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light">AdminLTE 3</span>
+        @if(auth()->user()->is_super_admin)
+            <span class="right badge badge-danger">Super Admin</span>
+        @endif
     </a>
 
     <!-- Sidebar -->
@@ -23,6 +26,16 @@
                         <p>
                             Categories
 {{--                            <span class="badge badge-info right">2</span>--}}
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('products.index')}}" class="nav-link">
+                        <i class="nav-icon far fa-circle text-info"></i>
+                        <p>
+                            products
+                            {{--                            <span class="badge badge-info right">2</span>--}}
                         </p>
                     </a>
                 </li>
