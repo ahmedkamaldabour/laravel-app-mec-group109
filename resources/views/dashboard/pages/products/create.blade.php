@@ -42,7 +42,7 @@
                     {{--                        </div>--}}
                     {{--                    @endif--}}
 
-                    <form action="{{route('product.store')}}" method="post">
+                    <form action="{{route('products.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -56,6 +56,38 @@
                                 <textarea class="form-control" name="description" placeholder="Enter Product Description">{{old('description')}}</textarea>
                                 @error('description') <span class="text-danger">{{$message}}</span> @enderror
                             </div>
+
+                            <div class="form-group">
+                                <label for="price">Product Price</label>
+                                <input type="number" class="form-control" id="price" name="price" value="{{old('price')}}"
+                                       placeholder="Enter Product Price">
+                                @error('price') <span class="text-danger">{{$message}}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="stock">Product Stock</label>
+                                <input type="number" class="form-control" id="stock" name="stock" value="{{old('stock')}}"
+                                       placeholder="Enter Product Stock">
+                                @error('stock') <span class="text-danger">{{$message}}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category_id">Category</label>
+                                <select class="form-control" name="category_id">
+                                    <option value="">Select Category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('category_id') <span class="text-danger">{{$message}}</span> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="image">Product Image</label>
+                                <input type="file" class="form-control" id="image" name="image">
+                                @error('image') <span class="text-danger">{{$message}}</span> @enderror
+                            </div>
+
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">

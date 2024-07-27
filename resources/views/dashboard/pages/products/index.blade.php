@@ -15,7 +15,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Categories</li>
+                            <li class="breadcrumb-item active">Products</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -27,9 +27,12 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card">
+                    @if(session('success'))
+                        <div class="alert alert-success">{{session('success')}}</div>
+                    @endif
                     <div class="card-header">
                         <h3 class="card-title">Products</h3>
-                        <a href="{{route('categories.create')}}" class="btn btn-primary float-right">Add Product</a>
+                        <a href="{{route('products.create')}}" class="btn btn-primary float-right">Add Product</a>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -39,7 +42,6 @@
                                 <th style="width: 10px">#</th>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Description</th>
                                 <th>Category Name</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
@@ -50,13 +52,14 @@
                             @foreach($products as $Product)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td><img src="{{asset('uploads/products/' . $Product->image)}}" alt="" style="width: 50px; height: 50px;"></td>
+                                    <td><img src="{{asset('images/' . $Product->image)}}" alt="" style="width: 100px; height: 100px;"></td>
                                     <td>{{$Product->name}}</td>
-                                    <td>{{substr($Product->description, 0, 50)}}...</td>
+{{--                                    <td>{{substr($Product->description, 0, 50)}}...</td>--}}
                                     <td>{{$Product->category->name}}</td>
                                     <td>{{$Product->price}}</td>
                                     <td>{{$Product->stock}}</td>
                                     <td>
+                                        <a href="{{route('products.show', $Product->id)}}" class="btn btn-info">Show</a>
                                         <a href="{{route('products.edit', $Product->id)}}" class="btn btn-primary">Edit</a>
                                         @if(auth()->user()->is_super_admin)
                                             <form action="{{route('products.destroy', $Product->id)}}" method="post" style="display: inline">

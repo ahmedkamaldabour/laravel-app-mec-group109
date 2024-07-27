@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\UploadFileTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

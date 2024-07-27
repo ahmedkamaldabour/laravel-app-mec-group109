@@ -14,7 +14,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::withCount('products')->paginate();
         return view('dashboard.pages.categories.index', compact('categories'));
     }
 
@@ -32,7 +32,7 @@ class CategoryController extends Controller
         return view('dashboard.pages.categories.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request )
     {
         // get the data form request
         // validate the data ---
@@ -50,15 +50,15 @@ class CategoryController extends Controller
         return redirect(route('categories.index'));
     }
 
-    public function edit($category_id)
+    public function edit(Category $category)
     {
-        // get the category by id
-        // check the category is exist or not
-        // if exist then show the edit form
-        $category = DB::table('categories')->where('id', $category_id)->first();
-        if(!$category){
-            abort(Response::HTTP_NOT_FOUND);
-        }
+//        // get the category by id
+//        // check the category is exist or not
+//        // if exist then show the edit form
+//        $category = DB::table('categories')->where('id', $category_id)->first();
+//        if(!$category){
+//            abort(Response::HTTP_NOT_FOUND);
+//        }
         return view('dashboard.pages.categories.edit', compact('category'));
     }
 

@@ -40,6 +40,8 @@
                                 <th style="width: 10px">#</th>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Products Count</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -47,7 +49,8 @@
                                 <tr>
                                     <td>{{$category->id}}</td>
                                     <td>{{$category->name}}</td>
-                                    <td>{{$category->description}}</td>
+                                    <td>{{substr($category->description, 0, 50)}}...</td>
+                                    <td>{{$category->products_count}}</td>
                                     <td>
                                         <a href="{{route('categories.edit', $category->id)}}" class="btn btn-primary">Edit</a>
                                         @if(auth()->user()->is_super_admin)
@@ -62,6 +65,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        {{$categories->links()}}
                     </div>
                 </div>
             </div><!-- /.container-fluid -->

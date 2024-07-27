@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('dashboard.index');
-})->name('dashboard.index');
+})->name('dashboard.index')->middleware('auth');
 
 
 Route::get('login', [AuthController::class, 'loginForm'])->name('login.form')->middleware('guest');
@@ -37,7 +37,7 @@ Route::group([
     Route::get('/create', 'create')->name('create');
     Route::get('/{category_id}', 'show')->name('show');
     Route::post('/', 'store')->name('store');
-    Route::get('/{category_id}/edit', 'edit')->name('edit');
+    Route::get('/{category}/edit', 'edit')->name('edit');
     Route::put('/{category_id}', 'update')->name('update');
     Route::delete('/{category_id}', 'destroy')->name('destroy')->middleware('can_delete_model');
 });
